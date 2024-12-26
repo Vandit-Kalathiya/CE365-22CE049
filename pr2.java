@@ -1,17 +1,17 @@
-import java.util.ArrayList;
 import java.util.*;
 
 public class pr2 {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
+        boolean exit = false;
         System.out.print("Number of input symbols : ");
         int ip = sc.nextInt();
-        sc.nextLine();
+        sc.nextLine(); 
 
         System.out.print("Enter symbols : ");
-        List<String> symbols = new ArrayList<>();
+        List<Character> symbols = new ArrayList<>();
         for (int i = 0; i < ip; i++) {
-            String s = sc.nextLine();
+            char s = sc.next().charAt(0);
             symbols.add(s);
         }
 
@@ -27,7 +27,7 @@ public class pr2 {
             accepting_states.add(t);
         }
 
-        int[][] transition_table = new int[states][ip];
+        int[][] transition_table = new int[states][ip+1];
 
         for (int i = 0; i < transition_table.length; i++) {
             for (int j = 0; j < transition_table[0].length; j++) {
@@ -37,33 +37,45 @@ public class pr2 {
             }
         }
         sc.nextLine();
-        System.out.print("Enter input string : ");
-        String str = sc.nextLine();
 
-        int curr = 1;
-        if (str == "null") {
-            if (accepting_states.contains(curr)) {
-                System.out.println("Valid");
-            } else
-                System.out.println("Invalid");
-        } else {
-            for (int i = 0; i < transition_table.length; i++) {
-                for (int j = 0; j < transition_table[0].length; j++) {
-                    System.out.print(transition_table[i][j] + " ");
+        while (!exit) {
+            System.out.print("Enter input string (or 'exit' to quit) : ");
+            String str = sc.nextLine();
+
+            if (str.equalsIgnoreCase("exit")) {
+                exit = true;
+            } else {
+                int curr = 1;
+                if (str.isEmpty()) {
+                    if (accepting_states.contains(curr)) {
+                        System.out.println("Valid");
+                    } else {
+                        System.out.println("Invalid");
+                    }
+                } else {
+                    for (int i = 0; i < str.length(); i++) {
+                        if(symbols.contains(str.charAt(i))){
+                            int from = curr - 1, to = str.charAt(i) - '0';
+                            curr = transition_table[from][to];
+                        }else{
+                            int from = curr - 1, to = ip;
+                            curr = transition_table[from][to];
+                        }
+                    }
+                    if (accepting_states.contains(curr)) {
+                        System.out.println("Valid");
+                    } else {
+                        System.out.println("Invalid");
+                    }
                 }
-                System.out.println();
             }
-
-            for (int i = 0; i < str.length(); i++) {
-                int from = curr - 1, to = str.charAt(i) == 'a' ? 0 : 1;
-                // System.out.println(transition_table[from][to]);
-                curr = transition_table[from][to];
-            }
-            System.out.println(curr);
-            if (accepting_states.contains(curr)) {
-                System.out.println("Valid");
-            } else
-                System.out.println("Invalid");
         }
     }
 }
+
+
+/* 1) Instead of using RE how would you impl the str validation logic using basic str manipulation techniques in C. 
+ * 2) How the program would behave if the user enters a str containing characters other than a and b modify the program to handle such cases.
+ * 3) In real world senarios where a similar str validation program we used. Can you think of an example where a specific pattern need to be an enforced.
+ * 4) How will you handle null str as a test case.
+*/
