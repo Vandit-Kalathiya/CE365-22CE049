@@ -27,7 +27,7 @@ public class pr2 {
             accepting_states.add(t);
         }
 
-        int[][] transition_table = new int[states][ip+1];
+        int[][] transition_table = new int[states][ip];
 
         for (int i = 0; i < transition_table.length; i++) {
             for (int j = 0; j < transition_table[0].length; j++) {
@@ -55,7 +55,7 @@ public class pr2 {
                 } else {
                     for (int i = 0; i < str.length(); i++) {
                         if(symbols.contains(str.charAt(i))){
-                            int from = curr - 1, to = str.charAt(i) - '0';
+                            int from = curr - 1, to = str.charAt(i) - 'a';
                             curr = transition_table[from][to];
                         }else{
                             int from = curr - 1, to = ip;
