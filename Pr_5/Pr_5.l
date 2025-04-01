@@ -12,7 +12,7 @@ FILE *input_file;
 
 [ \t\r]+               {/* Ignore whitespaces */}
 \n                     { line_num++; }  /* Count newlines */
-"//".*                 {/* Ignore single-line comments */}
+\/\/.*                 {printf("Comment: %s\n", yytext);}
 "/*"([^*]|\*+[^*/])*\*+"/" {/* Ignore multi-line comments */}
 
  /* ➤ KEYWORDS */
